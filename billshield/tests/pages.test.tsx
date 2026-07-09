@@ -138,7 +138,9 @@ describe("OnboardingPage", () => {
       </MemoryRouter>
     );
     await userEvent.type(screen.getByLabelText("Postcode"), "INVALID");
-    await userEvent.type(screen.getByLabelText("Energy provider"), "Test Energy");
+    // Open the energy provider Select dropdown
+    await userEvent.click(screen.getByRole("combobox"));
+    await userEvent.click(screen.getByText("British Gas"));
     const nextBtn = screen.getByText("Next");
     await userEvent.click(nextBtn);
     await waitFor(() => {
@@ -153,7 +155,8 @@ describe("OnboardingPage", () => {
       </MemoryRouter>
     );
     await userEvent.type(screen.getByLabelText("Postcode"), "BS1 4ST");
-    await userEvent.type(screen.getByLabelText("Energy provider"), "BrightSpark");
+    await userEvent.click(screen.getByRole("combobox"));
+    await userEvent.click(screen.getByText("British Gas"));
     await userEvent.click(screen.getByText("Next"));
     await waitFor(() => {
       expect(screen.getByText("Monthly costs")).toBeDefined();
@@ -167,7 +170,8 @@ describe("OnboardingPage", () => {
       </MemoryRouter>
     );
     await userEvent.type(screen.getByLabelText("Postcode"), "BS1 4ST");
-    await userEvent.type(screen.getByLabelText("Energy provider"), "BrightSpark");
+    await userEvent.click(screen.getByRole("combobox"));
+    await userEvent.click(screen.getByText("British Gas"));
     await userEvent.click(screen.getByText("Next"));
     await waitFor(() => screen.getByText("Monthly costs"));
 

@@ -22,3 +22,17 @@ if (!(Element.prototype as any).hasPointerCapture) {
 if (!(Element.prototype as any).scrollIntoView) {
   (Element.prototype as any).scrollIntoView = () => {};
 }
+
+const originalGetComputedStyle = window.getComputedStyle;
+window.getComputedStyle = (element, pseudoElt) => {
+  const style = originalGetComputedStyle(element, pseudoElt);
+  if (style.pointerEvents === "none") {
+    return new Proxy(style, {
+      get(target, prop) {
+        if (prop === "pointerEvents") return "auto";
+        return Reflect.get(target, prop);
+      },
+    });
+  }
+  return style;
+};
