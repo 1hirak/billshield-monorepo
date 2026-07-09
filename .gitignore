@@ -1,0 +1,10 @@
+.DS_Store
+*.db
+*.log
+uploads/
+__pycache__/
+.venv/
+node_modules/
+dist/
+.tsbuildinfo
+.pytest_cache/
