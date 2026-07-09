@@ -1,1 +1,20 @@
 import "@testing-library/jest-dom/vitest";
+
+if (!globalThis.PointerEvent) {
+  class PointerEvent extends MouseEvent {
+    pointerId: number;
+    pointerType: string;
+    constructor(type: string, params: PointerEventInit = {}) {
+      super(type, params);
+      this.pointerId = params.pointerId ?? 0;
+      this.pointerType = params.pointerType ?? "mouse";
+    }
+  }
+  globalThis.PointerEvent = PointerEvent as typeof globalThis.PointerEvent;
+}
+
+if (!(Element.prototype as any).hasPointerCapture) {
+  (Element.prototype as any).hasPointerCapture = () => false;
+  (Element.prototype as any).setPointerCapture = () => {};
+  (Element.prototype as any).releasePointerCapture = () => {};
+}
