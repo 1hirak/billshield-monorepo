@@ -15,8 +15,8 @@ class SupportServiceResponse(CamelModel):
     distance_miles: float = Field(alias="distanceMiles")
     opening_status: str = Field(alias="openingStatus")
     short_description: str = Field(alias="shortDescription")
-    address_line1: str | None = None
-    town: str | None = None
+    address_line1: str
+    town: str
     phone: str | None = None
     website: str | None = None
     directions_label: str | None = Field(default="Get directions", alias="directionsLabel")

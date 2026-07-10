@@ -2,9 +2,39 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Shield, ScanLine, TrendingDown, HeartHandshake, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { seedDemoData } from "@/api/endpoints";
+import { createHousehold, uploadBill, confirmBillFields } from "@/api/endpoints";
 import { setHouseholdId, setBillId } from "@/utils/storage";
 import { useState } from "react";
+
+const DEMO_HOUSEHOLD = {
+  postcode: "BS1 4ST",
+  householdType: "family_with_children" as const,
+  incomeBand: "15k_25k" as const,
+  energyProvider: "BrightSpark Energy",
+  paymentMethod: "direct_debit" as const,
+  monthlyRentOrMortgage: 850,
+  monthlyFoodCost: 360,
+  monthlyTransportCost: 155,
+  monthlyCouncilTax: 168,
+  monthlyBroadbandMobileCost: 52,
+  monthlyWaterCost: 39,
+  receivesQualifyingBenefits: true,
+  hasChildren: true,
+};
+
+const DEMO_BILL_FIELDS = {
+  supplier: "BrightSpark Energy",
+  tariffName: "Standard Variable Direct",
+  monthlyDirectDebit: 142,
+  electricityUnitRatePencePerKwh: 27.34,
+  electricityStandingChargePencePerDay: 60.12,
+  gasUnitRatePencePerKwh: 7.62,
+  gasStandingChargePencePerDay: 31.44,
+  annualElectricityUsageKwh: 2900,
+  annualGasUsageKwh: 11000,
+  paymentMethod: "direct_debit",
+  tariffType: "standard_variable",
+};
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -13,13 +43,28 @@ export default function LandingPage() {
   const handleDemo = async () => {
     setLoading(true);
     try {
-      const result = await seedDemoData();
-      setHouseholdId(result.householdId);
-      if (result.billId) setBillId(result.billId);
+      const household = await createHousehold(DEMO_HOUSEHOLD);
+      setHouseholdId(household.id);
+
+      const pdfBlob = new File(
+        ["%PDF-1.4\n% Demo bill for BillShield UK\n"],
+        "demo-energy-bill.pdf",
+        { type: "application/pdf" }
+      );
+
+      const uploadResult = await uploadBill({
+        householdId: household.id,
+        billType: "energy",
+        file: pdfBlob,
+      });
+      setBillId(uploadResult.billId);
+
+      await confirmBillFields(uploadResult.billId, DEMO_BILL_FIELDS);
+
       navigate("/dashboard");
     } catch {
       setLoading(false);
-      toast.error("Demo data unavailable right now — try 'Start household check' instead.");
+      toast.error("Demo setup failed — try 'Start household check' instead.");
     }
   };
 

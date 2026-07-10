@@ -70,7 +70,7 @@ class BillExtractionResponse(CamelModel):
     status: BillStatus
     bill_type: BillType = Field(alias="billType")
     original_filename: str = Field(alias="originalFilename")
-    uploaded_at: datetime | None = Field(default=None, alias="uploadedAt")
+    uploaded_at: datetime = Field(alias="uploadedAt")
     extraction: BillExtractionData | None = None
     review_warning: str | None = Field(default=None, alias="reviewWarning")
 

@@ -22,7 +22,7 @@ class PlanService:
         self.rec_repo = RecommendationRepository(db)
         self.plan_provider = plan_provider or MockPlanGeneratorProvider()
 
-    def generate_plan(self, household_id: str, tone: str = "supportive_practical") -> dict[str, Any]:
+    def generate_plan(self, household_id: str, tone: str = "supportive_practical", include_completed: bool = False) -> dict[str, Any]:
         household = self.household_repo.get_by_id(household_id)
         if not household:
             raise HouseholdNotFoundError(household_id)

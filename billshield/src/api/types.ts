@@ -99,7 +99,7 @@ export interface BillExtraction {
   status: string;
   billType: string;
   originalFilename: string;
-  uploadedAt: string;
+  uploadedAt: string | null;
   extraction: {
     supplier: ExtractionField<string>;
     tariffName: ExtractionField<string>;
