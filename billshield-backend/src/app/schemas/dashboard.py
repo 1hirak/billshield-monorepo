@@ -36,6 +36,7 @@ class BillBreakdown(CamelModel):
     standing_charge_insight: str = Field(alias="standingChargeInsight")
     avoidable_cost_monthly: float = Field(alias="avoidableCostMonthly")
     unavoidable_standing_charge_monthly: float = Field(alias="unavoidableStandingChargeMonthly")
+    insight: str | None = Field(default=None)
 
 
 class DashboardRecommendation(CamelModel):
@@ -58,6 +59,7 @@ class DashboardRecommendation(CamelModel):
     next_step: str | None = Field(default=None, alias="nextStep")
     steps: list[str] | None = None
     cta_label: str | None = Field(default="View steps", alias="ctaLabel")
+    call_script: str | None = Field(default=None, alias="callScript")
 
 
 class DashboardInsight(CamelModel):

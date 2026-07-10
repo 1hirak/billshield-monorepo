@@ -49,6 +49,7 @@ class RecommendationService:
                 "nextStep": rec.next_step,
                 "steps": steps,
                 "callScript": rec.call_script,
+                "ctaLabel": "View steps",
                 "status": rec.status.value,
             })
 

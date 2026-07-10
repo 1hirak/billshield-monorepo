@@ -13,4 +13,4 @@ router = APIRouter(prefix="/plans", tags=["plans"])
 @router.post("/30-day", response_model=ThirtyDayPlanResponse)
 def generate_plan(data: GeneratePlanRequest, db: Session = Depends(get_db)):
     service = PlanService(db)
-    return service.generate_plan(data.household_id, data.tone)  # type: ignore[return-value]
+    return service.generate_plan(data.household_id, data.tone, data.include_completed_actions)  # type: ignore[return-value]

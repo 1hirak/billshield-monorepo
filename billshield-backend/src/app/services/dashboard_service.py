@@ -272,6 +272,7 @@ class DashboardService:
                 "nextStep": rec.next_step,
                 "steps": steps,
                 "ctaLabel": "View steps",
+                "callScript": rec.call_script,
             })
         return formatted
 
